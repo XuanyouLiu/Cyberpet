@@ -38,9 +38,13 @@ These modes collectively make the Cyberpet a multifaceted companion, blending em
 
 In general, our code has four main bodies: CameraWebServer, Screen, ServoControl and facce_tracking.
 
-### CameraWebServer
+### CameraWebServer Folder
 
-The `CameraWebServer` folder contains essential driver code enabling the ESP32-CAM module to capture and stream video data. Key features of this setup include:
+The `CameraWebServer` folder contains essential driver code enabling the ESP32-CAM module to capture and stream video data. In code inside this folder should be complie and flash in Arduino IDE.
+
+To see how the ESP32-CAM works and how to configure for this board within Arduino IDE, please refer to this [tutorial](https://lastminuteengineers.com/getting-started-with-esp32-cam/).
+
+ Key features of this setup include:
 
 1. **Video Data Streaming**: The code facilitates the ESP32-CAM to capture video and stream it effectively, ensuring a steady flow of video data.
 2. **Targeted IP Address Transmission**: The streamed video data is sent to a specified IP address. This feature allows users to access the video stream by visiting the designated IP.
@@ -51,7 +55,11 @@ The `CameraWebServer` folder contains essential driver code enabling the ESP32-C
 
 ### Screen Folder Overview
 
-The "Screen" folder in our project is dedicated to handling the integration and functionality of various components: an LCD screen, a DHT11 Temperature and Humidity Sensor, and a PCF8563 Real Time Clock (RTC) module. Here's a breakdown of each component's role:
+The "Screen" folder in our project is dedicated to handling the integration and functionality of various components: an LCD screen, a DHT11 Temperature and Humidity Sensor, and a PCF8563 Real Time Clock (RTC) module. The code within thie folder should be run and uplaoded to arduino by using the `Makefile`.
+
+You may refer to this [tutorial](https://www.youtube.com/watch?v=Os5sGlw3PV0) if you don't know how to use a `Makefile`.
+
+Here's a breakdown of each component's role:
 
 1. **LCD Screen Management**:
 
@@ -66,9 +74,13 @@ The "Screen" folder in our project is dedicated to handling the integration and 
    - The PCF8563 is a Real Time Clock module, which provides accurate timekeeping.
    - This part of the code would handle the communication with the RTC module, ensuring that the current time and date are accurately maintained and can be displayed or used in conjunction with other functionalities, like logging sensor data with timestamps.
 
-### ServoControl
+### ServoControl Folder
 
-The "ServoControl" folder is specifically designated for controlling servo motors within our project. Here's a closer look at its structure and functionality:
+The "ServoControl" folder is specifically designated for controlling servo motors within our project. The code within thie folder should be run and uplaoded to arduino by using the `Makefile`.
+
+You may refer to this [tutorial](https://www.youtube.com/watch?v=Os5sGlw3PV0) if you don't know how to use a `Makefile`.
+
+Here's a closer look at its structure and functionality:
 
 1. **Direct Servo Motor Control**:
 
