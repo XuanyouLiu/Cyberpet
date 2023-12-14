@@ -20,10 +20,10 @@ stream_url = "http://192.168.0.114:81/stream"
 ser = serial.Serial('/dev/tty.usbmodem2101', 9600, timeout=1)
 
 # Create a VideoCapture object
-# cap = cv2.VideoCapture(stream_url)
+cap = cv2.VideoCapture(stream_url)
 
 # Create a VideoCapture object for the default camera
-cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(0)
 
 # Load the Haar Cascade for face detection
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -57,34 +57,40 @@ while True:
 
     face_detected = False 
 
-    # Check if 5 seconds have passed since the last signal
-    # if time.time() - last_signal_time >= 5:
+    largest_area = 0
+    largest_face = None
+
     for (x, y, w, h) in faces:
-            
-            face_detected = True
+        area = w * h
+        if area > largest_area:
+            largest_area = area
+            largest_face = (x, y, w, h)
 
-            # Calculate face center
-            face_center_x = x + w // 2
-            face_center_y = y + h // 2
-            # Draw rectangles around the faces
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+    if largest_face is not None:
+        x, y, w, h = largest_face
+        face_detected = True
 
-            # Check if the face is close to the edge
-            if face_center_x > frame_center_x + edge_threshold:
-                received_data = send_and_receive(ser, "1"+str(abs(frame_center_x-face_center_x))+"\n")
-                print("Sent:"+"1"+str(abs(frame_center_x-face_center_x))+"\n")
-                print("Received:", received_data)
-                # last_signal_time = time.time()  # Update the last signal time
-            elif face_center_x < frame_center_x - edge_threshold:
-                received_data = send_and_receive(ser, "2"+str(abs(frame_center_x-face_center_x))+"\n")
-                print("Sent:"+"2"+str(abs(frame_center_x-face_center_x))+"\n")
-                print("Received:", received_data)
-                # last_signal_time = time.time()  # Update the last signal time
-            elif abs(face_center_x - frame_center_x) <= edge_threshold:
-                received_data = send_and_receive(ser, "0000\n")
-                print("Sent: center")
-                print("Received:", received_data)
-                # last_signal_time = time.time()  # Update the last signal time
+        # Calculate face center
+        face_center_x = x + w // 2
+        face_center_y = y + h // 2
+
+        # Draw rectangles around the largest face
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+
+        # Check if the face is close to the edge
+        if face_center_x > frame_center_x + edge_threshold:
+            received_data = send_and_receive(ser, "1"+str(abs(frame_center_x-face_center_x))+"\n")
+            print("Sent:"+"1"+str(abs(frame_center_x-face_center_x))+"\n")
+            print("Received:", received_data)
+        elif face_center_x < frame_center_x - edge_threshold:
+            received_data = send_and_receive(ser, "2"+str(abs(frame_center_x-face_center_x))+"\n")
+            print("Sent:"+"2"+str(abs(frame_center_x-face_center_x))+"\n")
+            print("Received:", received_data)
+        elif abs(face_center_x - frame_center_x) <= edge_threshold:
+            received_data = send_and_receive(ser, "0000\n")
+            print("Sent: center")
+            print("Received:", received_data)
+
     
     if not face_detected:
 
